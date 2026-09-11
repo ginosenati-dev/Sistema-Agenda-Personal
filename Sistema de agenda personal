@@ -1,0 +1,153 @@
+import os
+import random
+import time
+
+# Variable global que almacena los contactos en un diccionario
+agenda = {}
+
+def verificar_archivo():
+    if not os.path.exists('agenda.txt'):
+        archivo = open('agenda.txt', 'w')
+        archivo.close()
+        print('Archivo de agenda creado correctamente')
+
+def cargar_contactos():
+    archivo = open('agenda.txt', 'r')
+    lineas = archivo.readlines()
+    archivo.close()
+    
+    posicion = 0
+    while posicion < len(lineas):
+        nombre = lineas[posicion].strip()
+        telefono = lineas[posicion + 1].strip()
+        correo = lineas[posicion + 2].strip()
+        
+        agenda[nombre] = {
+            'telefono': telefono,
+            'correo': correo
+        }
+        posicion = posicion + 3
+
+def guardar_contactos():
+    archivo = open('agenda.txt', 'w')
+    for nombre, datos in agenda.items():
+        archivo.write(nombre + '\n')
+        archivo.write(datos['telefono'] + '\n')
+        archivo.write(datos['correo'] + '\n')
+    archivo.close()
+
+def agregar_contacto():
+    nombre = input('Ingresa el nombre: ')
+    telefono = input('Ingresa el número: ')
+    
+    for datos in agenda.values():
+        if datos['telefono'] == telefono:
+            print('El número de teléfono ya está registrado')
+            return
+            
+    if nombre in agenda:
+        print('El contacto ya existe')
+        return
+        
+    correo = input('Ingresa el correo: ')
+    
+    agenda[nombre] = {
+        'telefono': telefono,
+        'correo': correo
+    }
+    
+    guardar_contactos() # Actividad 2: Guardar cambios automáticamente
+    print('Contacto agregado correctamente')
+
+def mostrar_contactos():
+    if not agenda:
+        print('\nLa agenda está vacía')
+        return
+        
+    print('\n--- LISTA DE CONTACTOS ---')
+    for nombre, datos in agenda.items():
+        print('Nombre:', nombre)
+        print('Teléfono:', datos['telefono'])
+        print('Correo:', datos['correo'])
+        print('--------------------------')
+
+def buscar_contacto():
+    nombre = input('Ingresa el nombre del contacto: ')
+    
+    if nombre not in agenda:
+        print('El contacto no existe')
+        return
+        
+    datos = agenda[nombre]
+    print('\n--- CONTACTO ENCONTRADO ---')
+    print('Nombre:', nombre)
+    print('Teléfono:', datos['telefono'])
+    print('Correo:', datos['correo'])
+
+def editar_contacto():
+    nombre = input('Ingresa el nombre del contacto: ')
+    
+    if nombre not in agenda:
+        print('El contacto no existe')
+        return
+        
+    telefono = input('Ingresa el nuevo número: ')
+    for nombre_contacto, datos in agenda.items():
+        if nombre_contacto != nombre and datos['telefono'] == telefono:
+            print('El número de teléfono ya está registrado')
+            return
+            
+    correo = input('Ingresa el nuevo correo: ')
+    
+    agenda[nombre]['telefono'] = telefono
+    agenda[nombre]['correo'] = correo
+    
+    guardar_contactos() # Actividad 2: Guardar cambios automáticamente
+    print('Contacto actualizado correctamente')
+
+def eliminar_contacto():
+    nombre = input('Ingresa el nombre del contacto: ')
+    
+    if nombre not in agenda:
+        print('El contacto no existe')
+        return
+        
+    del agenda[nombre]
+    
+    guardar_contactos() # Actividad 2: Guardar cambios automáticamente
+    print('Contacto eliminado correctamente')
+
+def menu():
+    while True:
+        print('\n==============================')
+        print('      AGENDA DE CONTACTOS')
+        print('==============================')
+        print('1. Agregar contacto')
+        print('2. Mostrar contactos')
+        print('3. Buscar contacto')
+        print('4. Editar contacto')
+        print('5. Eliminar contacto')
+        print('6. Salir')
+        print('==============================')
+        
+        opcion = input('Selecciona una opción: ')
+        
+        if opcion == '1':
+            agregar_contacto()
+        elif opcion == '2':
+            mostrar_contactos()
+        elif opcion == '3':
+            buscar_contacto()
+        elif opcion == '4':
+            editar_contacto()
+        elif opcion == '5':
+            eliminar_contacto()
+        elif opcion == '6':
+            print('Saliendo del programa...')
+            break
+        else:
+            print('Opción no válida')
+
+verificar_archivo()
+cargar_contactos()
+menu()
