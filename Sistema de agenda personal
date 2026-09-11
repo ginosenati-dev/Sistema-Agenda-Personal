@@ -2,7 +2,6 @@ import os
 import random
 import time
 
-# Variable global que almacena los contactos en un diccionario
 agenda = {}
 
 def verificar_archivo():
@@ -56,7 +55,7 @@ def agregar_contacto():
         'correo': correo
     }
     
-    guardar_contactos() # Actividad 2: Guardar cambios automáticamente
+    guardar_contactos() 
     print('Contacto agregado correctamente')
 
 def mostrar_contactos():
@@ -102,7 +101,7 @@ def editar_contacto():
     agenda[nombre]['telefono'] = telefono
     agenda[nombre]['correo'] = correo
     
-    guardar_contactos() # Actividad 2: Guardar cambios automáticamente
+    guardar_contactos() 
     print('Contacto actualizado correctamente')
 
 def eliminar_contacto():
@@ -114,7 +113,7 @@ def eliminar_contacto():
         
     del agenda[nombre]
     
-    guardar_contactos() # Actividad 2: Guardar cambios automáticamente
+    guardar_contactos() 
     print('Contacto eliminado correctamente')
 
 def menu():
